@@ -2,7 +2,14 @@
 title: "aRt"
 format: html
 editor: visual
+self-contained: true
 ---
+
+# Car Shapes
+
+**All of the information about car choices can be overwhelming. But in this sense it is merely a set of spirals.**
+
+Choosing different definitions of x, y, and size made each of my spirals from different functions unique. Altering the lapha on the segments alo allowed more complexity to be visible.
 
 ```{r}
 library(tidyverse)
@@ -34,9 +41,11 @@ mpg %>%
 
 ```
 
-## Second Plot
+# Kaya Devolved
 
-Adapted from https://art-from-code.netlify.app/day-1/session-2/#curl-of-a-fractal-pattern
+**One file contains a grid of pixels. Another merely contains a set of shapes and colors. Is one a more true representation than the other?**
+
+I selected the color pallete very intentionally using the most important colors of the dog. By selecting gen_worley I created the cool mosaic pattern. I selected a very high frequency of 90 to include all of the colors well and allow more complex patterns. 
 
 ```{r}
 library(dplyr)
@@ -88,12 +97,18 @@ make_noise_art <- function(
   
   return(art)
 }
-
-# Colors sampled from a picture of a beloved dog called Kaya
-kaya_palette = c("#FBF8D7", "#E2BE82", "#020514", "#E2BE82", "#FBF8D7", "#6B3E1D", "#FBF8D7", "#020514")
-make_noise_art(seed = 4321, pixels = 900, generator = gen_worley, palette = kaya_palette)
 ```
 
+```{r}
+# Colors sampled from a picture of a beloved dog called Kaya
+kaya_palette = c( "#FBF8D7", "#E2BE82", "#020514", "#FBF8D7", "#E2BE82", "#020514", "#E2BE82", "#FBF8D7", "#6B3E1D", "#FBF8D7", "#020514")
+make_noise_art(seed = 3474, pixels = 900, generator = gen_worley,
+               frequency = 90,
+               palette = kaya_palette)
+```
 
+![Kaya](kaya.jpg)
+
+Adapted from https://art-from-code.netlify.app/day-1/session-2/#curl-of-a-fractal-pattern
 
 
