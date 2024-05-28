@@ -20,7 +20,7 @@ mpg %>%
     colour = class,
     size = year/1000
   )) +
-  geom_segment(show.legend = FALSE) +
+  geom_segment(show.legend = FALSE, alpha = 0.25) +
   geom_line(aes(x = cty, y = hwy, size = cty)) +
   geom_point(aes(x = cty+hwy, y = -2*(cty*hwy)^0.5, size = displ/20, colour = manufacturer)) +
   coord_polar() +
@@ -33,4 +33,67 @@ mpg %>%
   theme(legend.position = "None")
 
 ```
+
+## Second Plot
+
+Adapted from https://art-from-code.netlify.app/day-1/session-2/#curl-of-a-fractal-pattern
+
+```{r}
+library(dplyr)
+library(purrr)
+library(tibble)
+library(ggplot2)
+library(ggthemes)
+#install.packages("ambient")
+library(ambient)
+```
+
+
+```{r}
+make_noise_art <- function(
+    generator = gen_perlin, 
+    frequency = 10, 
+    seed = 1234,
+    pixels = 2000,
+    palette = c("#e5ddc8", "#01949a", "#004369", "#db1f48"), 
+    ...
+) {
+  
+  # define the grid
+  canvas <- long_grid(
+    x = seq(from = 0, to = 1, length.out = pixels),
+    y = seq(from = 0, to = 1, length.out = pixels)
+  ) 
+  
+  # use the generator to add paint
+  canvas <- canvas |>
+    mutate(
+      paint = generator(
+        x, y, 
+        frequency = frequency, 
+        seed = seed, 
+        ...
+      )
+    )
+  
+  # use ggplot2 to draw the picture
+  art <- canvas |> 
+    ggplot(aes(x, y, fill = paint)) + 
+    geom_raster(show.legend = FALSE) +
+    theme_void() +
+    coord_equal() +
+    scale_x_continuous(expand = c(0, 0)) +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_fill_gradientn(colours = palette)
+  
+  return(art)
+}
+
+# Colors sampled from a picture of a beloved dog called Kaya
+kaya_palette = c("#FBF8D7", "#E2BE82", "#020514", "#E2BE82", "#FBF8D7", "#6B3E1D", "#FBF8D7", "#020514")
+make_noise_art(seed = 4321, pixels = 900, generator = gen_worley, palette = kaya_palette)
+```
+
+
+
 
